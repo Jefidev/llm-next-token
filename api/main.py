@@ -34,7 +34,7 @@ def get_next_token(sentence: str, k: int = 10):
     top_k_tokens, top_k_probs = get_k_next_tokens(sentence, model, tokenizer, k=k)
 
     ret_value = {}
-    for i in range(10):
+    for i in range(k):
         token = top_k_tokens[i]
         prob = top_k_probs[i]
         ret_value[token] = prob.item()
