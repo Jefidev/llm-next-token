@@ -30,7 +30,7 @@ def read_root():
 
 
 @app.post("/next-token")
-def get_next_token(sentence: str, k: int = 10, select_best: bool = True):
+def get_next_token(sentence: str, k: int = 10):
     top_k_tokens, top_k_probs = get_k_next_tokens(sentence, model, tokenizer, k=k)
 
     ret_value = {}
