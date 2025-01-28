@@ -6,8 +6,8 @@ import torch
 from fastapi import FastAPI
 
 app = FastAPI()
-model = AutoModelForCausalLM.from_pretrained("bigscience/bloomz-560m")
-tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-560m")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B")
 
 
 def get_k_next_tokens(input_text, model, tokenizer, k=10):
