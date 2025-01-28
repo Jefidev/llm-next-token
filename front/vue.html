@@ -6,23 +6,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel = "stylesheet" href = "vue.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <title>Vizualize a LLM prediction</title>
+  <title>Visualize a LLM prediction</title>
 </head>
 
 <body>
 
   <div class="container py-5">
     <div class="text-center mb-5">
-      <h1>Vizualize a LLM prediction</h1>
+      <h1>Visualize a LLM prediction</h1>
       <p class="text-muted">Analyze your sentences and explore tokens with their scores in a soft singla page.</p>
     </div>
+
 
     <div class="row g-4">
       <!-- Input Section -->
       <div class="col-md-6">
         <div class="card p-4">
           <h5 class="card-title">Input Sentence</h5>
-          <a href="#" class="text-decoration-none d-none" id="explore">
+          <a href="#" class="text-dsecoration-none d-none" id="explore">
             Explore which part of the sentence is the most determinant for next word prediction
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
@@ -42,6 +43,7 @@
           <div id="output_token" class="output-token">
             <!-- Tokens will be dynamically added here -->
             <p>No tokens to display yet...</p>
+
           </div>
         </div>
       </div>
