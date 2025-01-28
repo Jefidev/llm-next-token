@@ -16,8 +16,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-model = AutoModelForCausalLM.from_pretrained("bigscience/bloomz-560m")
-tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-560m")
+model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B")
+tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B")
 
 
 def get_k_next_tokens(input_text, model, tokenizer, k=10):
@@ -57,3 +57,8 @@ def get_next_token(request: NextTokenRequest):
         ret_value[token] = prob.item()
 
     return ret_value
+
+
+@app.post("/attention-score")
+def get_attention_score(sentence: str):
+    pass
