@@ -1,13 +1,23 @@
 from typing import Union
+from fastapi.middleware.cors import CORSMiddleware
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import numpy as np
 import torch
+from pydantic import BaseModel
 
 from fastapi import FastAPI
 
 app = FastAPI()
-model = AutoModelForCausalLM.from_pretrained("meta-llama/Llama-3.1-8B")
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Llama-3.1-8B")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+model = AutoModelForCausalLM.from_pretrained("bigscience/bloomz-560m")
+tokenizer = AutoTokenizer.from_pretrained("bigscience/bloomz-560m")
 
 
 def get_k_next_tokens(input_text, model, tokenizer, k=10):
@@ -29,8 +39,15 @@ def read_root():
     return {"Hello": "World"}
 
 
+class NextTokenRequest(BaseModel):
+    sentence: str
+    k: int = 10
+
+
 @app.post("/next-token")
-def get_next_token(sentence: str, k: int = 10):
+def get_next_token(request: NextTokenRequest):
+    sentence = request.sentence
+    k = request.k
     top_k_tokens, top_k_probs = get_k_next_tokens(sentence, model, tokenizer, k=k)
 
     ret_value = {}

@@ -1,0 +1,49 @@
+.output_token{
+    position: relative;
+    left: 2%;
+}
+
+body {
+    background-color: #fdfdfd;
+  }
+
+  h1 {
+    font-weight: bold;
+    color: #4A4A4A;
+  }
+
+  .card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .card-title {
+    font-weight: bold;
+    color: #6C757D;
+  }
+
+  .btn-primary {
+    background-color: #5A9;
+    border-color: #5A9;
+  }
+
+  .btn-primary:hover {
+    background-color: #47936B;
+    border-color: #47936B;
+  }
+
+  .output-token {
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: #E8F5E9;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #C8E6C9;
+    color: #4A4A4A;
+  }
+
+  .output-token p {
+    font-size: 14px;
+    color: #6C757D;
+  }
