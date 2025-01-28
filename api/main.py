@@ -123,7 +123,8 @@ def get_attention_score(request: AttentionRequest):
 
     results = {}
     results["tokens"] = clean_tokens
+    results["heads"] = {}
     for i in range(choose_head):
-        results[f"attention_score_head_{i}"] = attention_agg_norm[i].tolist()
+        results["heads"][f"attention_{i}"] = attention_agg_norm[i].tolist()
 
     return results
