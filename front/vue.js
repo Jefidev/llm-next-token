@@ -26,7 +26,7 @@ document.getElementById('input_token').addEventListener('input', function () {
     const wordCount = sentence.split(/\s+/).filter(word => word.length > 0).length;
 
     if (wordCount > 3) {
-        // Définit un délai de 3 secondes après la dernière frappe
+
         typingTimeout = setTimeout(() => {
             const k = 5;
             getNextToken(sentence, k)
@@ -53,7 +53,7 @@ document.getElementById('input_token').addEventListener('input', function () {
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        }, 1500); // Délai de 3 secondes
+        }, 1500); 
     } else {
         document.getElementById('output_token').innerHTML = '';
     }
