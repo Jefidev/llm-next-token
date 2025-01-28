@@ -34,7 +34,7 @@ document.getElementById('input_token').addEventListener('input', function () {
                     document.getElementById('output_token').innerHTML = '';
                     for (let key in data) {
                         let value = data[key].toFixed(4);
-                        let percentage = (value * 100) + 10;
+                        let percentage = (value * 100) + 5;
                         let jauge_value = percentage.toFixed(2);
                         document.getElementById('output_token').innerHTML +=
                             `<div class="key_jauge"> 
