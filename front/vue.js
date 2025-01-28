@@ -24,9 +24,10 @@ document.getElementById('input_token').addEventListener('input', function () {
 
     const sentence = document.getElementById('input_token').value;
     const wordCount = sentence.split(/\s+/).filter(word => word.length > 0).length;
+    const explore_link = document.getElementById('explore');
 
     if (wordCount > 3) {
-
+        explore_link.classList.remove('d-none');
         typingTimeout = setTimeout(() => {
             const k = 5;
             getNextToken(sentence, k)
@@ -55,6 +56,7 @@ document.getElementById('input_token').addEventListener('input', function () {
                 });
         }, 1500);
     } else {
+        explore_link.classList.add('d-none');
         document.getElementById('output_token').innerHTML = '';
     }
 });
