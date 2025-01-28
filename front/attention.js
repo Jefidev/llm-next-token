@@ -4,6 +4,14 @@ let lastScrollTime = 0; // To track the last event time
 const scrollThreshold = 100; // Time in milliseconds
 const gestureThreshold = 50; // Minimum delta for meaningful gesture
 
+const color_ranges = [
+    [[173, 216, 230], [0, 191, 255]],
+    [[144, 238, 144], [152, 251, 152]],
+    [[255, 54, 58], [255, 182, 193]],
+    [[255, 165, 0], [255, 255, 224]],
+    [[211, 91, 239], [238, 174, 255]]
+]
+
 async function getAttentionHead(sentence) {
     try {
         const response = await fetch('http://localhost:8000/attention-score', {
@@ -20,6 +28,11 @@ async function getAttentionHead(sentence) {
         console.error('Error:', error);
         throw error;
     }
+}
+
+function choose(choices) {
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
 }
 
 function displayAttentionScore(attention_score) {
@@ -44,7 +57,17 @@ function displayAttentionScore(attention_score) {
         let token = zipped_list[i][0];
         let weight = zipped_list[i][1];
 
-        let color = `rgba(255, 165, 0, ${weight})`;
+        // generate random color
+        selected_color = color_ranges[attention_idx % color_ranges.length];
+
+        start_rgb = selected_color[0];
+        end_rgb = selected_color[1];
+
+        r = start_rgb[0] + (end_rgb[0] - start_rgb[0]) * weight
+        g = start_rgb[1] + (end_rgb[1] - start_rgb[1]) * weight
+        b = start_rgb[2] + (end_rgb[2] - start_rgb[2]) * weight
+
+        let color = `rgba(${r}, ${g}, ${b}, ${weight})`;
         generated_html += `<span style="background-color: ${color}; padding: 2px; margin: 2px; border-radius: 4px;">${token}</span> `;
     }
 
@@ -83,7 +106,6 @@ window.addEventListener('wheel', (event) => {
         }
 
         displayAttentionScore(attention_score);
-
     }
 
     lastScrollTime = currentTime; // Update the last scroll time
