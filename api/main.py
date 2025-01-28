@@ -62,6 +62,10 @@ class NextTokenRequest(BaseModel):
     k: int = 10
 
 
+class AttentionRequest(BaseModel):
+    sentence: str
+
+
 @app.post("/next-token")
 def get_next_token(request: NextTokenRequest):
     sentence = request.sentence
@@ -78,8 +82,9 @@ def get_next_token(request: NextTokenRequest):
 
 
 @app.post("/attention-score")
-def get_attention_score(sentence: str):
+def get_attention_score(request: AttentionRequest):
 
+    sentence = request.sentence
     # Tokenize input
     inputs = tokenizer(sentence, return_tensors="pt", return_attention_mask=True)
 
