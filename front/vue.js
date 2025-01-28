@@ -20,7 +20,7 @@ async function getNextToken(sentence, k) {
 let typingTimeout;
 
 document.getElementById('input_token').addEventListener('input', function () {
-    clearTimeout(typingTimeout); // Annule le précédent timeout si l'utilisateur continue de taper
+    clearTimeout(typingTimeout); 
 
     const sentence = document.getElementById('input_token').value;
     const wordCount = sentence.split(/\s+/).filter(word => word.length > 0).length;
@@ -53,7 +53,7 @@ document.getElementById('input_token').addEventListener('input', function () {
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        }, 1500); 
+        }, 1000); 
     } else {
         document.getElementById('output_token').innerHTML = '';
     }
