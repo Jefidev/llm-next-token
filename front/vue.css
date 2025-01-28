@@ -47,3 +47,28 @@ body {
     font-size: 14px;
     color: #6C757D;
   }
+  .small-progress {
+    width: 2%;
+  }
+  
+  .progress-container {
+    display: flex; /* Utilisation de flex pour aligner sur la même ligne */
+    align-items: center; /* Centrage vertical du texte et de la barre */
+    margin-top: 5px; /* Un petit espace au-dessus */
+  }
+  
+  .progress {
+    width: 200px; /* Largeur de la barre de progression */
+    height: 20px;
+   position: fixed;
+   left: 60%;
+  }
+  
+  .progress-bar {
+    height: 100%; /* La barre de progression prend toute la hauteur du conteneur */
+  }
+  .key_jauge {
+    display: flex;
+    flex-direction: row;
+  }
+  
