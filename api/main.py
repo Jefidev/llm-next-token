@@ -38,12 +38,13 @@ def get_k_next_tokens(input_text, model, tokenizer, k=10):
 def read_root():
     return {"Hello": "World"}
 
+
 class NextTokenRequest(BaseModel):
     sentence: str
     k: int = 10
 
-@app.post("/next-token")
 
+@app.post("/next-token")
 def get_next_token(request: NextTokenRequest):
     sentence = request.sentence
     k = request.k
