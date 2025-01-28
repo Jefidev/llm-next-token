@@ -19,6 +19,15 @@ async function getNextToken(sentence, k) {
 
 let typingTimeout;
 
+// Override click function
+document.getElementById('explore').onclick = function () {
+    const sentence = document.getElementById('input_token').value;
+
+    // Redirect to the explore page
+    window.location.href = `attention.html?sentence=${sentence}`;
+}
+
+
 document.getElementById('input_token').addEventListener('input', function () {
     clearTimeout(typingTimeout); 
 

@@ -1,10 +1,8 @@
-from typing import Union
 from fastapi.middleware.cors import CORSMiddleware
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import numpy as np
 import torch
 from pydantic import BaseModel
-from IPython.core.display import display, HTML
 from fastapi import FastAPI
 import random
 
@@ -33,10 +31,24 @@ def get_k_next_tokens(input_text, model, tokenizer, k=10):
         logits = outputs.logits
 
     last_token_logits = logits[:, -1, :]
-    top_k_probs, top_k_indices = torch.topk(torch.softmax(last_token_logits, dim=-1), k)
+    top_k_probs, top_k_indices = torch.topk(
+        torch.softmax(last_token_logits, dim=-1), k + 1
+    )
 
     top_k_tokens = [tokenizer.decode(token_id) for token_id in top_k_indices[0]]
     top_k_probs = top_k_probs[0].numpy()
+
+    # Remove the end-of-text token if it exists
+    for i, token in enumerate(top_k_tokens):
+        if token == "</s>":
+            top_k_tokens.pop(i)
+            top_k_probs = np.delete(top_k_probs, i)
+            break
+
+    if len(top_k_tokens) > k:
+        top_k_tokens = top_k_tokens[:k]
+        top_k_probs = top_k_probs[:k]
+    print(top_k_tokens[0])
     return top_k_tokens, top_k_probs
 
 
@@ -48,6 +60,10 @@ def read_root():
 class NextTokenRequest(BaseModel):
     sentence: str
     k: int = 10
+
+
+class AttentionRequest(BaseModel):
+    sentence: str
 
 
 @app.post("/next-token")
@@ -66,8 +82,9 @@ def get_next_token(request: NextTokenRequest):
 
 
 @app.post("/attention-score")
-def get_attention_score(sentence: str):
+def get_attention_score(request: AttentionRequest):
 
+    sentence = request.sentence
     # Tokenize input
     inputs = tokenizer(sentence, return_tensors="pt", return_attention_mask=True)
 
