@@ -29,7 +29,7 @@ document.getElementById('explore').onclick = function () {
 
 
 document.getElementById('input_token').addEventListener('input', function () {
-    clearTimeout(typingTimeout); // Annule le précédent timeout si l'utilisateur continue de taper
+    clearTimeout(typingTimeout); 
 
     const sentence = document.getElementById('input_token').value;
     const wordCount = sentence.split(/\s+/).filter(word => word.length > 0).length;
@@ -44,11 +44,11 @@ document.getElementById('input_token').addEventListener('input', function () {
                     document.getElementById('output_token').innerHTML = '';
                     for (let key in data) {
                         let value = data[key].toFixed(4);
-                        let percentage = (value * 100) + 10;
+                        let percentage = (value * 100) +20;
                         let jauge_value = percentage.toFixed(2);
                         document.getElementById('output_token').innerHTML +=
                             `<div class="key_jauge"> 
-                                <span id='key' onclick='addtext(this)'>${key}</span> :  
+                                <span id='key' onclick='addtext(this)' class='soft-btn'>${key}</span>
                                 <div class="progress-container">
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" 
@@ -63,7 +63,7 @@ document.getElementById('input_token').addEventListener('input', function () {
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        }, 1500);
+        }, 1000); 
     } else {
         explore_link.classList.add('d-none');
         document.getElementById('output_token').innerHTML = '';
