@@ -42,23 +42,41 @@ document.getElementById('input_token').addEventListener('input', function () {
             getNextToken(sentence, k)
                 .then(data => {
                     document.getElementById('output_token').innerHTML = '';
+                    let total = 0;
+                    let percentages = [];
                     for (let key in data) {
-                        let value = data[key].toFixed(4);
-                        let percentage = (value * 100) +20;
-                        let jauge_value = percentage.toFixed(2);
+                        let value = parseFloat(data[key].toFixed(4));  
+                        total += value;
+                        percentages.push({ key: key, value: value });
+                    }
+                    
+                    percentages.forEach(item => {
+                        item.percentage = (item.value / total) * 100;
+                    });
+                    
+                    let sum = 0;
+                    document.getElementById('output_token').innerHTML = "";  
+                    
+                    percentages.forEach(item => {
+                        let jauge_width = item.percentage + 20;  
+                        let jauge_value = item.percentage.toFixed(2);
+                        sum += item.percentage; 
                         document.getElementById('output_token').innerHTML +=
-                            `<div class="key_jauge"> 
-                                <span id='key' onclick='addtext(this)' class='soft-btn'>${key}</span>
+                            `<div class="key_jauge">
+                                <span id='key' onclick='addtext(this)' class='soft-btn'>${item.key}</span>
                                 <div class="progress-container">
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" 
-                                            style="width:${percentage}%" aria-valuemin="0" aria-valuemax="10"> 
+                                            style="width:${jauge_width}%" aria-valuemin="0" aria-valuemax="100">
                                             ${jauge_value}%
                                         </div>
                                     </div>
                                 </div>
                             </div>`;
-                    }
+                    });
+                    
+                  
+      
                 })
                 .catch(error => {
                     console.error('Error:', error);
