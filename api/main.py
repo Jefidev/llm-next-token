@@ -95,7 +95,7 @@ def get_attention_score(request: AttentionRequest):
     # Select a fixed layer and two random heads
     fixed_layer = -1  # Last layer
     num_heads = attentions[fixed_layer].shape[1]
-    choose_head = 5
+    choose_head = 10
     head_indices = random.sample(range(num_heads), choose_head)  # Pick n random heads
     # Attention scores for the selected heads
 
