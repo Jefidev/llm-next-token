@@ -68,7 +68,7 @@ function displayAttentionScore(attention_score) {
         b = start_rgb[2] + (end_rgb[2] - start_rgb[2]) * weight
 
         let color = `rgba(${r}, ${g}, ${b}, ${weight})`;
-        generated_html += `<span style="background-color: ${color}; padding: 2px; margin: 2px; border-radius: 4px;">${token}</span> `;
+        generated_html += `<span class='soft-btn btn-outline-dark display-6' style="background-color: ${color}; padding: 2px; margin: 2px; border-radius: 4px;">${token}</span> `;
     }
 
     attention_score_div.innerHTML = generated_html;

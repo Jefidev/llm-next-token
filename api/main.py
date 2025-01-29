@@ -93,27 +93,27 @@ def get_attention_score(request: AttentionRequest):
     attentions = outputs.attentions  # List of attention weights for each layer
 
     # Select a fixed layer and two random heads
-    fixed_layer = -1  # Last layer
-    num_heads = attentions[fixed_layer].shape[1]
+    num_heads = attentions[-1].shape[1]
     choose_head = 10
     head_indices = random.sample(range(num_heads), choose_head)  # Pick n random heads
     # Attention scores for the selected heads
+    attention_agg_norm = []
+    for layer in [0, 12, -1]:
+        attention_heads = [
+            attentions[layer][0, head_indices[i]] for i in range(choose_head)
+        ]  # Shape: [seq_len, seq_len]
 
-    attention_heads = [
-        attentions[fixed_layer][0, head_indices[i]] for i in range(choose_head)
-    ]  # Shape: [seq_len, seq_len]
+        # Aggregate attention scores per token (e.g., mean over columns)
+        attention_aggs = [
+            attention_heads[i].mean(dim=0) for i in range(choose_head)
+        ]  # Shape: [seq_len] Note: other way to aggregate???
 
-    # Aggregate attention scores per token (e.g., mean over columns)
-    attention_aggs = [
-        attention_heads[i].mean(dim=0) for i in range(choose_head)
-    ]  # Shape: [seq_len] Note: other way to aggregate???
-
-    # Normalize attention scores to 0-1 for visualization
-    attention_agg_norm = [
-        (attention_aggs[i] - attention_aggs[i].min())
-        / (attention_aggs[i].max() - attention_aggs[i].min())
-        for i in range(choose_head)
-    ]
+        # Normalize attention scores to 0-1 for visualization
+        attention_agg_norm += [
+            (attention_aggs[i] - attention_aggs[i].min())
+            / (attention_aggs[i].max() - attention_aggs[i].min())
+            for i in range(choose_head)
+        ]
 
     # Convert tokens for visualization
     tokens = tokenizer.convert_ids_to_tokens(inputs["input_ids"][0])
@@ -124,7 +124,7 @@ def get_attention_score(request: AttentionRequest):
     results = {}
     results["tokens"] = clean_tokens
     results["heads"] = {}
-    for i in range(choose_head):
-        results["heads"][f"attention_{i}"] = attention_agg_norm[i].tolist()
+    for i, attentions in enumerate(attention_agg_norm):
+        results["heads"][f"attention_{i}"] = attentions.tolist()
 
     return results
