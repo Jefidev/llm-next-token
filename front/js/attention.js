@@ -30,18 +30,42 @@ async function getAttentionHead(sentence) {
     }
 }
 
+async function displayAttentionSvg(sentence, idx) {
+    try {
+        const response = await fetch('http://localhost:8000/attention-plot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ sentence: sentence, idx: idx })
+        });
+
+        const data = await response;
+        return data;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+}
+
+
 function choose(choices) {
     var index = Math.floor(Math.random() * choices.length);
     return choices[index];
 }
 
-function displayAttentionScore(attention_score) {
+function displayAttentionScore(attention_score, sentence) {
     const attention_score_div = document.getElementById('attention');
     const tokens = attention_score["tokens"];
 
     // Change Label
     const label = document.getElementById('head-tag');
     label.innerHTML = `Head ${attention_idx + 1}`;
+
+    displayAttentionSvg(sentence, attention_idx).then(response => response.text())
+        .then(svg => {
+            document.getElementById('svg-container').innerHTML = svg;
+        })
 
     // get key at index idx in the dictionary
     const keys = Object.keys(attention_score["heads"]);
@@ -86,7 +110,7 @@ window.onload = function () {
         .then(data => {
             attention_score = data;
             console.log(attention_score);
-            displayAttentionScore(attention_score);
+            displayAttentionScore(attention_score, sentence);
         });
 
 }
@@ -94,6 +118,8 @@ window.onload = function () {
 window.addEventListener('wheel', (event) => {
     const currentTime = Date.now();
     const timeDiff = currentTime - lastScrollTime;
+    const urlParams = new URLSearchParams(window.location.search);
+    const sentence = urlParams.get('sentence');
 
     if (timeDiff > scrollThreshold && Math.abs(event.deltaY) > gestureThreshold) {
 
@@ -105,7 +131,7 @@ window.addEventListener('wheel', (event) => {
             attention_idx = Math.max(0, attention_idx - 1);
         }
 
-        displayAttentionScore(attention_score);
+        displayAttentionScore(attention_score, sentence);
     }
 
     lastScrollTime = currentTime; // Update the last scroll time
